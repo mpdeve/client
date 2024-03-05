@@ -19,11 +19,11 @@ import axios from "axios";
 import { AddProduct } from "services/operations/productAdmin";
 const VALIDATION_SCHEMA = yup.object().shape({
   name: yup.string().required("Name is required!"),
-  category: yup.array().min(1).required("Category is required!"),
+  categories: yup.array().min(1).required("Category is required!"),
   description: yup.string().required("Description is required!"),
   price: yup.number().required("Price is required!"),
-  vendor_price: yup.number().optional(),
-  isColorVariant: yup.boolean(),
+  vendorPrice: yup.number().optional(),
+  isColor: yup.boolean(),
 }); // ================================================================
 
 const ProductForm = () => {
@@ -32,23 +32,26 @@ const ProductForm = () => {
     categories: [],
     description: "",
     price: "",
-    vendor_price: "",
-    isColorVariant: false,
+    vendorPrice: "",
+    isColor: false,
     color: [],
     isVariant: false,
   };
 
   const handleFormSubmit = (values) => {
+    console.log("hi");
+    console.log(values);
     const ProductValues = {
       ...values,
       variants: variants,
-      image: fileLink
+      image: fileLink,
     };
-console.log(ProductValues)    
+    console.log(ProductValues);
     // console.log(values);
     // console.log(variants);
     // console.log(fileLink)
-    AddProduct(ProductValues)
+
+    AddProduct(ProductValues);
   };
   const [files, setFiles] = useState([]); // HANDLE UPDATE NEW IMAGE VIA DROP ZONE
   const [fileLink, setFileLink] = useState(""); // HANDLE UPDATE NEW IMAGE VIA DROP ZONE
@@ -57,7 +60,7 @@ console.log(ProductValues)
   const [variants, setVariants] = useState([
     { mode: "", description: "", price: "" },
   ]);
-  
+
   useEffect(() => {
     getAllCategoriesDetails();
     getAllColorDetails();
@@ -175,7 +178,7 @@ console.log(ProductValues)
                   size="medium"
                   name="categories"
                   onBlur={handleBlur}
-                  placeholder="Category"
+                  placeholder="categories"
                   onChange={handleChange}
                   value={values.categories}
                   label="Select Category"
@@ -248,25 +251,25 @@ console.log(ProductValues)
                   color="info"
                   size="medium"
                   type="number"
-                  name="vendor_price"
+                  name="vendorPrice"
                   label="Vendor Price"
                   onBlur={handleBlur}
                   onChange={handleChange}
                   placeholder="Vendor Price"
-                  value={values.vendor_price}
-                  error={!!touched.vendor_price && !!errors.vendor_price}
-                  helperText={touched.vendor_price && errors.vendor_price}
+                  value={values.vendorPrice}
+                  error={!!touched.vendorPrice && !!errors.vendorPrice}
+                  helperText={touched.vendorPrice && errors.vendorPrice}
                 />
               </Grid>
 
               <Grid item sm={6} xs={12}>
                 <FormControlLabel
-                  name="isColorVariant"
-                  id="isColorVariant"
+                  name="isColor"
+                  id="isColor"
                   control={
                     <Switch
                       color="primary"
-                      checked={values.isColorVariant}
+                      checked={values.isColor}
                       onChange={handleChange}
                     />
                   }
@@ -274,7 +277,7 @@ console.log(ProductValues)
                   labelPlacement="start"
                 />
 
-                {values.isColorVariant && (
+                {values.isColor && (
                   <TextField
                     select
                     fullWidth
