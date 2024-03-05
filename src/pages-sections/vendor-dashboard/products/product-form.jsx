@@ -16,6 +16,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { UploadImageBox, StyledClear } from "../styles"; // FORM FIELDS VALIDATION SCHEMA
 import { BASE_URL } from "../../../services/apis";
 import axios from "axios";
+import { AddProduct } from "services/operations/productAdmin";
 const VALIDATION_SCHEMA = yup.object().shape({
   name: yup.string().required("Name is required!"),
   category: yup.array().min(1).required("Category is required!"),
@@ -28,7 +29,7 @@ const VALIDATION_SCHEMA = yup.object().shape({
 const ProductForm = () => {
   const INITIAL_VALUES = {
     name: "",
-    category: [],
+    categories: [],
     description: "",
     price: "",
     vendor_price: "",
@@ -38,9 +39,16 @@ const ProductForm = () => {
   };
 
   const handleFormSubmit = (values) => {
-    console.log(values);
-    console.log(variants);
-    console.log(fileLink)
+    const ProductValues = {
+      ...values,
+      variants: variants,
+      image: fileLink
+    };
+console.log(ProductValues)    
+    // console.log(values);
+    // console.log(variants);
+    // console.log(fileLink)
+    AddProduct(ProductValues)
   };
   const [files, setFiles] = useState([]); // HANDLE UPDATE NEW IMAGE VIA DROP ZONE
   const [fileLink, setFileLink] = useState(""); // HANDLE UPDATE NEW IMAGE VIA DROP ZONE
@@ -165,17 +173,17 @@ const ProductForm = () => {
                   fullWidth
                   color="info"
                   size="medium"
-                  name="category"
+                  name="categories"
                   onBlur={handleBlur}
                   placeholder="Category"
                   onChange={handleChange}
-                  value={values.category}
+                  value={values.categories}
                   label="Select Category"
                   SelectProps={{
                     multiple: true,
                   }}
-                  error={!!touched.category && !!errors.category}
-                  helperText={touched.category && errors.category}
+                  error={!!touched.categories && !!errors.categories}
+                  helperText={touched.categories && errors.categories}
                 >
                   {categories.map((category) => (
                     <MenuItem key={category?._id} value={category?._id}>
