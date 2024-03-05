@@ -1,4 +1,6 @@
-import IndexPageView from "pages-sections/landing/page-view";
+// import IndexPageView from "pages-sections/landing/page-view";
+import FashionTwoPageView from "pages-sections/fashion-2/page-view";
+
 export const metadata = {
   title: "Bazaar - Next.js E-commerce Template",
   description: `Bazaar is a React Next.js E-commerce template. Build SEO friendly Online store, delivery app and Multi vendor store`,
@@ -9,5 +11,5 @@ export const metadata = {
   keywords: ["e-commerce", "e-commerce template", "next.js", "react"]
 };
 export default function IndexPage() {
-  return <IndexPageView />;
+  return <FashionTwoPageView />;
 }

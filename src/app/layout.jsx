@@ -12,6 +12,8 @@ import SettingsProvider from "contexts/SettingContext"; // GLOBAL CUSTOM COMPONE
 import RTL from "components/rtl";
 import ProgressBar from "components/progress"; // IMPORT i18n SUPPORT FILE
 
+import ShopLayout1 from "components/layouts/shop-layout-1";
+
 import "i18n";
 export default function RootLayout({
   children
@@ -22,7 +24,9 @@ export default function RootLayout({
           <SettingsProvider>
             <ThemeProvider>
               <ProgressBar />
+              <ShopLayout1>
               <RTL>{children}</RTL>
+              </ShopLayout1>
             </ThemeProvider>
           </SettingsProvider>
         </CartProvider>
