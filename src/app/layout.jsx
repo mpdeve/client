@@ -6,7 +6,7 @@ export const openSans = Open_Sans({
 import ThemeProvider from "theme/theme-provider"; // PRODUCT CART PROVIDER
 
 import CartProvider from "contexts/CartContext"; // SITE SETTINGS PROVIDER
-
+import ReduxProvider from "reducer/ReduxProvider";
 import SettingsProvider from "contexts/SettingContext"; // GLOBAL CUSTOM COMPONENTS
 
 import RTL from "components/rtl";
@@ -20,7 +20,9 @@ export default function RootLayout({
 }) {
   return <html lang="en" suppressHydrationWarning>
       <body className={openSans.className}>
+        <npm >
         <CartProvider>
+        <ReduxProvider>
           <SettingsProvider>
             <ThemeProvider>
               <ProgressBar />
@@ -29,7 +31,9 @@ export default function RootLayout({
               </ShopLayout1>
             </ThemeProvider>
           </SettingsProvider>
-        </CartProvider>
+          </ReduxProvider>
+          </CartProvider>
+        </npm>
       </body>
     </html>;
 }
