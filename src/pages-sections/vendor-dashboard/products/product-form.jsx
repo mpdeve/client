@@ -36,23 +36,34 @@ const ProductForm = () => {
     isColor: false,
     color: [],
     isVariant: false,
+    isGst:false,
+    gst:"",
+    isSale:false,
+    salePrice:"",
+    productIsActive:true
   };
 
-  const handleFormSubmit = (values) => {
-    console.log("hi");
-    console.log(values);
-    const ProductValues = {
-      ...values,
-      variants: variants,
-      image: fileLink,
-    };
-    console.log(ProductValues);
-    // console.log(values);
-    // console.log(variants);
-    // console.log(fileLink)
 
-    AddProduct(ProductValues);
+  const handleFormSubmit = async (values, { setValues }) => {
+    try {
+      
+      const ProductValues = {
+        ...values,
+        variants: variants,
+        image: fileLink,
+      };
+  
+      await AddProduct(ProductValues);
+  
+      // Manually reset each field to its initial value
+      setValues(INITIAL_VALUES);
+      setFiles([])
+    } catch (error) {
+      console.error("Failed to add product", error);
+      // Handle error if necessary
+    }
   };
+  
   const [files, setFiles] = useState([]); // HANDLE UPDATE NEW IMAGE VIA DROP ZONE
   const [fileLink, setFileLink] = useState(""); // HANDLE UPDATE NEW IMAGE VIA DROP ZONE
   const [categories, setCategories] = useState([]);
@@ -140,7 +151,8 @@ const ProductForm = () => {
       }}
     >
       <Formik
-        onSubmit={handleFormSubmit}
+              //  onSubmit={handleFormSubmit}
+              onSubmit={(values, { setValues }) => handleFormSubmit(values, { setValues })}
         initialValues={INITIAL_VALUES}
         validationSchema={VALIDATION_SCHEMA}
       >
@@ -306,6 +318,75 @@ const ProductForm = () => {
 
               <Grid item sm={6} xs={12}>
                 <FormControlLabel
+                  name="isSale"
+                  id="isSale"
+                  control={
+                    <Switch
+                      color="primary"
+                      checked={values.isSale}
+                      onChange={handleChange}
+                    />
+                  }
+                  label="Sale on Product"
+                  labelPlacement="start"
+                />
+                 {values.isSale && (
+                  <TextField
+                  fullWidth
+                  name="salePrice"
+                  color="info"
+                  size="medium"
+                  type="number"
+                  onBlur={handleBlur}
+                  value={values.salePrice}
+                  label="Sale Prce"
+                  onChange={handleChange}
+                  placeholder="salePrice"
+                  error={!!touched.salePrice && !!errors.salePrice}
+                  helperText={touched.salePrice && errors.salePrice}
+                />
+                )}
+
+
+                </Grid>
+
+              
+
+              <Grid item sm={6} xs={12}>
+                <FormControlLabel
+                  name="isGst"
+                  id="isGst"
+                  control={
+                    <Switch
+                      color="primary"
+                      checked={values.isGst}
+                      onChange={handleChange}
+                    />
+                  }
+                  label="GST on Product"
+                  labelPlacement="start"
+                />
+                 {values.isGst && (
+                  <TextField
+                  fullWidth
+                  name="gst"
+                  color="info"
+                  size="medium"
+                  type="number"
+                  onBlur={handleBlur}
+                  value={values.gst}
+                  label="GST"
+                  onChange={handleChange}
+                  placeholder="gst"
+                  error={!!touched.gst && !!errors.gst}
+                  helperText={touched.gst && errors.gst}
+                />
+                )}
+
+
+                </Grid>
+                <Grid item sm={6} xs={12}>
+                <FormControlLabel
                   name="isVariant"
                   id="isVariant"
                   control={
@@ -367,6 +448,22 @@ const ProductForm = () => {
                   <Button onClick={handleAddVariant}>Add Variant</Button>
                 )}
               </Grid>
+                
+                <Grid item sm={6} xs={12}>
+                <FormControlLabel
+                  name="productIsActive"
+                  id="productIsActive"
+                  control={
+                    <Switch
+                      color="primary"
+                      checked={values.productIsActive}
+                      onChange={handleChange}
+                    />
+                  }
+                  label="Product is Live"
+                  labelPlacement="start"
+                />
+                </Grid>
 
               <Grid item sm={6} xs={12}>
                 <Button variant="contained" color="info" type="submit">

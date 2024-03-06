@@ -1,5 +1,6 @@
 import { ProductsPageView } from "pages-sections/vendor-dashboard/products/page-view"; // API FUNCTIONS
-
+import { productEndpoints } from "services/apis";
+const { GETALLRODUCT_API} = productEndpoints;
 import api from "utils/__api__/dashboard";
 export const metadata = {
   title: "Products - Bazaar Next.js E-commerce Template",
@@ -11,6 +12,10 @@ export const metadata = {
   keywords: ["e-commerce", "e-commerce template", "next.js", "react"]
 };
 export default async function Products() {
-  const products = await api.products();
-  return <ProductsPageView products={products} />;
+  const Data =  await fetch(GETALLRODUCT_API, { cache: 'no-cache' })
+  const response = await Data.json()
+  const ProductList = response?.data;
+  console.log(ProductList)
+  
+  return <ProductsPageView products={ProductList}  />;
 }

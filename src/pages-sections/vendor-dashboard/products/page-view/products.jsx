@@ -17,49 +17,55 @@ import useMuiTable from "hooks/useMuiTable"; // Local CUSTOM COMPONENT
 import ProductRow from "../product-row";
 import SearchArea from "../../search-box"; // CUSTOM DATA MODEL
 
-// TABLE HEADING DATA LIST
-const tableHeading = [{
-  id: "name",
-  label: "Name",
-  align: "left"
-}, {
-  id: "category",
-  label: "Category",
-  align: "left"
-}, {
-  id: "brand",
-  label: "Brand",
-  align: "left"
-}, {
-  id: "price",
-  label: "Price",
-  align: "left"
-}, {
-  id: "published",
-  label: "Published",
-  align: "left"
-}, {
-  id: "action",
-  label: "Action",
-  align: "center"
-}]; // =============================================================================
+const tableHeading = [
+  {
+    id: "name",
+    label: "Name",
+    align: "left",
+  },
+  {
+    id: "category",
+    label: "Category",
+    align: "left",
+  },
+  {
+    id: "isVariant",
+    label: "isVariant",
+    align: "left",
+  },
+  {
+    id: "price",
+    label: "Price",
+    align: "left",
+  },
+  {
+    id: "published",
+    label: "Published",
+    align: "left",
+  },
+  {
+    id: "action",
+    label: "Action",
+    align: "center",
+  },
+]; // =============================================================================
 
 // =============================================================================
-const ProductsPageView = ({
-  products
-}) => {
-  const [productList, setProductList] = useState([...products]); // RESHAPE THE PRODUCT LIST BASED TABLE HEAD CELL ID
+const ProductsPageView = ({ products }) => {
+  const [productList, setProductList] = useState([...products]);
+  console.log(productList);
 
-  const filteredProducts = productList.map(item => ({
-    id: item.id,
-    slug: item.slug,
-    name: item.title,
-    brand: item.brand,
+  const filteredProducts = productList.map((item) => ({
+    id: item._id,
+    name: item.name,
+    description: item.description,
     price: item.price,
-    image: item.thumbnail,
-    published: item.published,
-    category: item.categories[0]
+    image: item.image,
+    isVariant: item.isVariant,
+    category: item.category.map((cate) => cate.name).join(", "),
+    productIsActive:item.productIsActive
   }));
+console.log(filteredProducts)
   const {
     order,
     orderBy,
@@ -67,35 +73,57 @@ const ProductsPageView = ({
     rowsPerPage,
     filteredList,
     handleChangePage,
-    handleRequestSort
+    handleRequestSort,
   } = useMuiTable({
-    listData: filteredProducts
+    listData: filteredProducts,
   });
-  return <Box py={4}>
+  return (
+    <Box py={4}>
       <H3 mb={2}>Product List</H3>
 
-      <SearchArea handleSearch={() => {}} buttonText="Add Product" url="/admin/products/create" searchPlaceholder="Search Product..." />
+      <SearchArea
+        handleSearch={() => {}}
+        buttonText="Add Product"
+        url="/admin/products/create"
+        searchPlaceholder="Search Product..."
+      />
 
       <Card>
         <Scrollbar autoHide={false}>
-          <TableContainer sx={{
-          minWidth: 900
-        }}>
+          <TableContainer
+            sx={{
+              minWidth: 900,
+            }}
+          >
             <Table>
-              <TableHeader order={order} hideSelectBtn orderBy={orderBy} heading={tableHeading} rowCount={products.length} numSelected={selected.length} onRequestSort={handleRequestSort} />
+              <TableHeader
+                order={order}
+                hideSelectBtn
+                orderBy={orderBy}
+                heading={tableHeading}
+                rowCount={5}
+                numSelected={selected.length}
+                onRequestSort={handleRequestSort}
+              />
 
               <TableBody>
-                {filteredList.map((product, index) => <ProductRow key={index} product={product} />)}
+                {filteredList.map((product, index) => (
+                  <ProductRow key={index} product={product} />
+                ))}
               </TableBody>
             </Table>
           </TableContainer>
         </Scrollbar>
 
         <Stack alignItems="center" my={4}>
-          <TablePagination onChange={handleChangePage} count={Math.ceil(products.length / rowsPerPage)} />
+          <TablePagination
+            onChange={handleChangePage}
+            count={Math.ceil(products.length / rowsPerPage)}
+          />
         </Stack>
       </Card>
-    </Box>;
+    </Box>
+  );
 };
 
 export default ProductsPageView;
