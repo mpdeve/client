@@ -52,8 +52,8 @@ const tableHeading = [
 
 // =============================================================================
 const ProductsPageView = ({ products }) => {
+ 
   const [productList, setProductList] = useState([...products]);
-  console.log(productList);
 
   const filteredProducts = productList.map((item) => ({
     id: item._id,
@@ -63,7 +63,14 @@ const ProductsPageView = ({ products }) => {
     image: item.image,
     isVariant: item.isVariant,
     category: item.category.map((cate) => cate.name).join(", "),
-    productIsActive:item.productIsActive
+    color:item.color.map((col) => col.colorName).join(", "),
+    productIsActive:item.productIsActive,
+    isSale:item.isSale,
+    salePrice:item.salePrice,
+    salePercentage:item.salePercentage,
+    isGst:item.isGst,
+    gst:item.gst,
+    slug:item.slug
   }));
 console.log(filteredProducts)
   const {

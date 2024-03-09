@@ -21,7 +21,7 @@ const VALIDATION_SCHEMA = yup.object().shape({
   name: yup.string().required("Name is required!"),
   categories: yup.array().min(1).required("Category is required!"),
   description: yup.string().required("Description is required!"),
-  price: yup.number().required("Price is required!"),
+  price: yup.number(),
   vendorPrice: yup.number().optional(),
   isColor: yup.boolean(),
 }); // ================================================================
@@ -39,7 +39,7 @@ const ProductForm = () => {
     isGst:false,
     gst:"",
     isSale:false,
-    salePrice:"",
+    salePercentage:"",
     productIsActive:true
   };
 
@@ -49,15 +49,19 @@ const ProductForm = () => {
       
       const ProductValues = {
         ...values,
-        variants: variants,
+        variant: variants,
         image: fileLink,
       };
   
       await AddProduct(ProductValues);
-  
+    
       // Manually reset each field to its initial value
       setValues(INITIAL_VALUES);
       setFiles([])
+      setVariants([
+        { mode: "", description: "", price: "" },
+      ])
+      setFileLink("")
     } catch (error) {
       console.error("Failed to add product", error);
       // Handle error if necessary
@@ -122,8 +126,18 @@ const ProductForm = () => {
   };
 
   const handleAddVariant = () => {
-    setVariants([...variants, { mode: "", description: "", price: "" }]);
+    const lastVariant = variants[variants.length - 1];
+    const newPrice = (variants.length + 1) * 100; // Adjust the base price as needed
+    const newVariant = {
+      mode: "",
+      description: "",
+      price: newPrice,
+    };
+    setVariants([...variants, newVariant]);
   };
+  
+  
+  
 
   const handleRemoveVariant = (index) => {
     const updatedVariants = [...variants];
@@ -333,17 +347,17 @@ const ProductForm = () => {
                  {values.isSale && (
                   <TextField
                   fullWidth
-                  name="salePrice"
+                  name="salePercentage"
                   color="info"
                   size="medium"
                   type="number"
                   onBlur={handleBlur}
-                  value={values.salePrice}
-                  label="Sale Prce"
+                  value={values.salePercentage}
+                  label="Sale Percentage"
                   onChange={handleChange}
-                  placeholder="salePrice"
-                  error={!!touched.salePrice && !!errors.salePrice}
-                  helperText={touched.salePrice && errors.salePrice}
+                  placeholder="salePercentage"
+                  error={!!touched.salePercentage && !!errors.salePercentage}
+                  helperText={touched.salePercentage && errors.salePercentage}
                 />
                 )}
 

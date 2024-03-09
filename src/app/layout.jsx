@@ -26,10 +26,10 @@ export default function RootLayout({ children }) {
               <SettingsProvider>
                 <ThemeProvider>
                   <ProgressBar />
-                  <ShopLayout1>
+                  {/* <ShopLayout1> */}
                     <RTL>{children}</RTL>
                     <Toaster />
-                  </ShopLayout1>
+                  {/* </ShopLayout1> */}
                 </ThemeProvider>
               </SettingsProvider>
             </ReduxProvider>
