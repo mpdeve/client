@@ -4,7 +4,7 @@ import { productEndpoints, categoryEndpoints } from "../apis";
 import { toast } from "react-hot-toast";
 
 const { ADDPRODUCT_API, EDITACTIVEPRODUCT_API } = productEndpoints;
-const { ADDCATEGORY_API } = categoryEndpoints;
+const { ADDCATEGORY_API,GETALLCATEGORY_API } = categoryEndpoints;
 
 export const AddProduct = async (data) => {
   const toastId = toast.loading("Adding Product...");
@@ -27,6 +27,7 @@ export const EditProductStatus = async (data) => {
   }
   toast.dismiss(toastId);
 };
+
 export const Addcategory = async (data) => {
   const toastId = toast.loading("Adding Product...");
   try {
@@ -37,3 +38,4 @@ export const Addcategory = async (data) => {
   }
   toast.dismiss(toastId);
 };
+

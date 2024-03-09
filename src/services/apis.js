@@ -7,5 +7,5 @@ export const productEndpoints = {
 };
 export const categoryEndpoints = {
   ADDCATEGORY_API: BASE_URL + "/product/createCategory",
-  GETALLCATEGORY_API: BASE_URL + "/showAllCategories",
+  GETALLCATEGORY_API: BASE_URL + "/product/showAllCategories",
 };

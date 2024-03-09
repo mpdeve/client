@@ -7,11 +7,7 @@ import { H3 } from "components/Typography"; // Local CUSTOM COMPONENT
 import CategoryForm from "../category-form";
 
 const CreateCategoryPageView = () => {
-  const INITIAL_VALUES = {
-    name: "",
-    parent: [],
-    featured: false
-  };
+ 
 
 
   return <Box py={4}>

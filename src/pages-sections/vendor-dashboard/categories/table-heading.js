@@ -8,18 +8,16 @@ export const tableHeading = [{
   label: "Name",
   align: "left"
 }, {
-  id: "image",
-  label: "Image",
+  id: "Description",
+  label: "Description",
   align: "left"
-}, {
-  id: "level",
-  label: "Level",
+},
+{
+  id: "Products",
+  label: "Products",
   align: "left"
-}, {
-  id: "featured",
-  label: "Featured",
-  align: "left"
-}, {
+},
+{
   id: "action",
   label: "Action",
   align: "center"

@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Avatar from "@mui/material/Avatar"; // MUI ICON COMPONENTS
+
 
 import Edit from "@mui/icons-material/Edit";
 import Delete from "@mui/icons-material/Delete";
 import RemoveRedEye from "@mui/icons-material/RemoveRedEye"; // GLOBAL CUSTOM COMPONENT
 
-import BazaarSwitch from "components/BazaarSwitch"; // STYLED COMPONENTS
 
 import { StyledTableRow, CategoryWrapper, StyledTableCell, StyledIconButton } from "../styles"; // ========================================================================
 
@@ -16,15 +15,14 @@ const CategoryRow = ({
   selected
 }) => {
   const {
-    image,
+    product,
     name,
-    level,
-    featured,
+  description,
     id,
     slug
   } = category || {};
   const router = useRouter();
-  const [featuredCategory, setFeaturedCategory] = useState(featured);
+
   const hasSelected = selected.indexOf(name) !== -1;
 
   const handleNavigate = () => router.push(`/admin/categories/${slug}`);
@@ -35,18 +33,14 @@ const CategoryRow = ({
       <StyledTableCell align="left">
         <CategoryWrapper>{name}</CategoryWrapper>
       </StyledTableCell>
-
       <StyledTableCell align="left">
-        <Avatar alt={name} src={image} sx={{
-        borderRadius: 2
-      }} />
+        <CategoryWrapper>{description}</CategoryWrapper>
       </StyledTableCell>
+   
 
-      <StyledTableCell align="left">{level}</StyledTableCell>
+      <StyledTableCell align="left">{product}</StyledTableCell>
 
-      <StyledTableCell align="left">
-        <BazaarSwitch color="info" checked={featuredCategory} onChange={() => setFeaturedCategory(state => !state)} />
-      </StyledTableCell>
+    
 
       <StyledTableCell align="center">
         <StyledIconButton onClick={handleNavigate}>
