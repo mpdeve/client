@@ -12,74 +12,80 @@ import * as yup from "yup"; // GLOBAL CUSTOM COMPONENTS
 
 import DropZone from "components/DropZone";
 import { FlexBox } from "components/flex-box"; // STYLED COMPONENTS
+import { Addcategory } from "services/operations/productAdmin";
 
 import { UploadImageBox, StyledClear } from "../styles"; // FORM FIELDS VALIDATION
+import { Description } from "@mui/icons-material";
 
+const INITIAL_VALUES = {
+  name: "",
+  description: "",
+};
 const VALIDATION_SCHEMA = yup.object().shape({
-  name: yup.string().required("Name required")
+  name: yup.string().required("Name required"),
 }); // ================================================================
 
+const handleFormSubmit = async (values) => {
+  console.log(values);
+  await Addcategory(values);
+  values.name = "";
+  values.description = "";
+};
 // ================================================================
-const CategoryForm = props => {
-  const {
-    initialValues,
-    handleFormSubmit
-  } = props;
-  const [files, setFiles] = useState([]); // HANDLE UPDATE NEW IMAGE VIA DROP ZONE
+const CategoryForm = () => {
+  const CreateCategoryPageView = () => {};
 
-  const handleChangeDropZone = files => {
-    files.forEach(file => Object.assign(file, {
-      preview: URL.createObjectURL(file)
-    }));
-    setFiles(files);
-  }; // HANDLE DELETE UPLOAD IMAGE
-
-
-  const handleFileDelete = file => () => {
-    setFiles(files => files.filter(item => item.name !== file.name));
-  };
-
-  return <Card sx={{
-    p: 6
-  }}>
-      <Formik onSubmit={handleFormSubmit} initialValues={initialValues} validationSchema={VALIDATION_SCHEMA}>
+  return (
+    <Card
+      sx={{
+        p: 6,
+      }}
+    >
+      <Formik
+        onSubmit={handleFormSubmit}
+        initialValues={INITIAL_VALUES}
+        validationSchema={VALIDATION_SCHEMA}
+      >
         {({
-        values,
-        errors,
-        touched,
-        handleChange,
-        handleBlur,
-        handleSubmit
-      }) => <form onSubmit={handleSubmit}>
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+        }) => (
+          <form onSubmit={handleSubmit}>
             <Grid container spacing={3}>
               <Grid item sm={6} xs={12}>
-                <TextField fullWidth name="name" label="Name" color="info" size="medium" placeholder="Name" value={values.name} onBlur={handleBlur} onChange={handleChange} error={!!touched.name && !!errors.name} helperText={touched.name && errors.name} />
+                <TextField
+                  fullWidth
+                  name="name"
+                  label="Name"
+                  color="info"
+                  size="medium"
+                  placeholder="Name"
+                  value={values.name}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  error={!!touched.name && !!errors.name}
+                  helperText={touched.name && errors.name}
+                />
               </Grid>
 
               <Grid item sm={6} xs={12}>
-                <TextField select fullWidth color="info" size="medium" name="parent" onBlur={handleBlur} value={values.parent} onChange={handleChange} placeholder="Parent Category" label="Select Parent Category" SelectProps={{
-              multiple: true
-            }}>
-                  <MenuItem value="electronics">Electronics</MenuItem>
-                  <MenuItem value="fashion">Fashion</MenuItem>
-                </TextField>
-              </Grid>
-
-              <Grid item xs={12}>
-                <DropZone title="Drop & drag category image" onChange={files => handleChangeDropZone(files)} />
-
-                <FlexBox flexDirection="row" mt={2} flexWrap="wrap" gap={1}>
-                  {files.map((file, index) => {
-                return <UploadImageBox key={index}>
-                        <Box component="img" alt="product" src={file.preview} width="100%" />
-                        <StyledClear onClick={handleFileDelete(file)} />
-                      </UploadImageBox>;
-              })}
-                </FlexBox>
-              </Grid>
-
-              <Grid item sm={6} xs={12}>
-                <FormControlLabel label="Featured Category" control={<Checkbox color="info" name="featured" onBlur={handleBlur} onChange={handleChange} value={values.featured} />} />
+                <TextField
+                  fullWidth
+                  name="description"
+                  label="description"
+                  color="info"
+                  size="medium"
+                  placeholder="description"
+                  value={values.description}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  error={!!touched.description && !!errors.description}
+                  helperText={touched.description && errors.description}
+                />
               </Grid>
 
               <Grid item xs={12}>
@@ -88,9 +94,11 @@ const CategoryForm = props => {
                 </Button>
               </Grid>
             </Grid>
-          </form>}
+          </form>
+        )}
       </Formik>
-    </Card>;
+    </Card>
+  );
 };
 
 export default CategoryForm;

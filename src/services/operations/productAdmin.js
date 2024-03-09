@@ -1,8 +1,10 @@
 import { apiConnector } from "../apiConnector";
-import { productEndpoints } from "../apis";
+import { productEndpoints, categoryEndpoints } from "../apis";
+
 import { toast } from "react-hot-toast";
 
-const { ADDPRODUCT_API ,EDITACTIVEPRODUCT_API} = productEndpoints;
+const { ADDPRODUCT_API, EDITACTIVEPRODUCT_API } = productEndpoints;
+const { ADDCATEGORY_API } = categoryEndpoints;
 
 export const AddProduct = async (data) => {
   const toastId = toast.loading("Adding Product...");
@@ -25,4 +27,13 @@ export const EditProductStatus = async (data) => {
   }
   toast.dismiss(toastId);
 };
-
+export const Addcategory = async (data) => {
+  const toastId = toast.loading("Adding Product...");
+  try {
+    const response = await apiConnector("POST", ADDCATEGORY_API, data);
+    toast.success("category added successfully");
+  } catch (error) {
+    console.log("category Add Error...........", error);
+  }
+  toast.dismiss(toastId);
+};
