@@ -17,13 +17,14 @@ import { UploadImageBox, StyledClear } from "../styles"; // FORM FIELDS VALIDATI
 import { BASE_URL } from "../../../services/apis";
 import axios from "axios";
 import { AddProduct } from "services/operations/productAdmin";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+
 const VALIDATION_SCHEMA = yup.object().shape({
   name: yup.string().required("Name is required!"),
   categories: yup.array().min(1).required("Category is required!"),
-  description: yup.string().required("Description is required!"),
-  price: yup.number(),
-  vendorPrice: yup.number().optional(),
-  isColor: yup.boolean(),
+  description: yup.string().required("Description is required!")
 }); // ================================================================
 
 const ProductForm = () => {
@@ -32,42 +33,40 @@ const ProductForm = () => {
     categories: [],
     description: "",
     price: "",
-    vendorPrice: "",
+    vendorPrice: 0,
     isColor: false,
     color: [],
-    isVariant: false,
-    isGst:false,
-    gst:"",
-    isSale:false,
-    salePercentage:"",
-    productIsActive:true
+    iscake: false,
+    isGst: false,
+    gst: "",
+    isSale: false,
+    salePercentage: "",
+    productIsActive: true,
+    iscombo: false,
   };
-
 
   const handleFormSubmit = async (values, { setValues }) => {
     try {
-      
       const ProductValues = {
         ...values,
-        variant: variants,
+        cakevariants: variants,
         image: fileLink,
       };
-  
+
+      console.log(ProductValues)
       await AddProduct(ProductValues);
-    
+
       // Manually reset each field to its initial value
       setValues(INITIAL_VALUES);
-      setFiles([])
-      setVariants([
-        { mode: "", description: "", price: "" },
-      ])
-      setFileLink("")
+      setFiles([]);
+      setVariants([{ mode: "", price: "" }]);
+      setFileLink("");
     } catch (error) {
       console.error("Failed to add product", error);
       // Handle error if necessary
     }
   };
-  
+
   const [files, setFiles] = useState([]); // HANDLE UPDATE NEW IMAGE VIA DROP ZONE
   const [fileLink, setFileLink] = useState(""); // HANDLE UPDATE NEW IMAGE VIA DROP ZONE
   const [categories, setCategories] = useState([]);
@@ -127,7 +126,7 @@ const ProductForm = () => {
 
   const handleAddVariant = () => {
     const lastVariant = variants[variants.length - 1];
-    const newPrice = (variants.length + 1) * 100; // Adjust the base price as needed
+    const newPrice = lastVariant.price * 1.5; // Set the new price as 98% of the last variant's price
     const newVariant = {
       mode: "",
       description: "",
@@ -135,9 +134,6 @@ const ProductForm = () => {
     };
     setVariants([...variants, newVariant]);
   };
-  
-  
-  
 
   const handleRemoveVariant = (index) => {
     const updatedVariants = [...variants];
@@ -165,8 +161,10 @@ const ProductForm = () => {
       }}
     >
       <Formik
-              //  onSubmit={handleFormSubmit}
-              onSubmit={(values, { setValues }) => handleFormSubmit(values, { setValues })}
+        //  onSubmit={handleFormSubmit}
+        onSubmit={(values, { setValues }) =>
+          handleFormSubmit(values, { setValues })
+        }
         initialValues={INITIAL_VALUES}
         validationSchema={VALIDATION_SCHEMA}
       >
@@ -266,8 +264,7 @@ const ProductForm = () => {
                   label="Price"
                   onChange={handleChange}
                   placeholder="Price"
-                  error={!!touched.price && !!errors.price}
-                  helperText={touched.price && errors.price}
+                 
                 />
               </Grid>
 
@@ -283,8 +280,7 @@ const ProductForm = () => {
                   onChange={handleChange}
                   placeholder="Vendor Price"
                   value={values.vendorPrice}
-                  error={!!touched.vendorPrice && !!errors.vendorPrice}
-                  helperText={touched.vendorPrice && errors.vendorPrice}
+               
                 />
               </Grid>
 
@@ -344,27 +340,23 @@ const ProductForm = () => {
                   label="Sale on Product"
                   labelPlacement="start"
                 />
-                 {values.isSale && (
+                {values.isSale && (
                   <TextField
-                  fullWidth
-                  name="salePercentage"
-                  color="info"
-                  size="medium"
-                  type="number"
-                  onBlur={handleBlur}
-                  value={values.salePercentage}
-                  label="Sale Percentage"
-                  onChange={handleChange}
-                  placeholder="salePercentage"
-                  error={!!touched.salePercentage && !!errors.salePercentage}
-                  helperText={touched.salePercentage && errors.salePercentage}
-                />
+                    fullWidth
+                    name="salePercentage"
+                    color="info"
+                    size="medium"
+                    type="number"
+                    onBlur={handleBlur}
+                    value={values.salePercentage}
+                    label="Sale Percentage"
+                    onChange={handleChange}
+                    placeholder="salePercentage"
+                    error={!!touched.salePercentage && !!errors.salePercentage}
+                    helperText={touched.salePercentage && errors.salePercentage}
+                  />
                 )}
-
-
-                </Grid>
-
-              
+              </Grid>
 
               <Grid item sm={6} xs={12}>
                 <FormControlLabel
@@ -380,65 +372,57 @@ const ProductForm = () => {
                   label="GST on Product"
                   labelPlacement="start"
                 />
-                 {values.isGst && (
+                {values.isGst && (
                   <TextField
-                  fullWidth
-                  name="gst"
-                  color="info"
-                  size="medium"
-                  type="number"
-                  onBlur={handleBlur}
-                  value={values.gst}
-                  label="GST"
-                  onChange={handleChange}
-                  placeholder="gst"
-                  error={!!touched.gst && !!errors.gst}
-                  helperText={touched.gst && errors.gst}
-                />
+                    fullWidth
+                    name="gst"
+                    color="info"
+                    size="medium"
+                    type="number"
+                    onBlur={handleBlur}
+                    value={values.gst}
+                    label="GST"
+                    onChange={handleChange}
+                    placeholder="gst"
+                    error={!!touched.gst && !!errors.gst}
+                    helperText={touched.gst && errors.gst}
+                  />
                 )}
-
-
-                </Grid>
-                <Grid item sm={6} xs={12}>
+              </Grid>
+              <Grid item sm={6} xs={12}>
                 <FormControlLabel
-                  name="isVariant"
-                  id="isVariant"
+                  name="iscake"
+                  id="iscake"
                   control={
                     <Switch
                       color="primary"
-                      checked={values.isVariant}
+                      checked={values.iscake}
                       onChange={handleChange}
                     />
                   }
-                  label="Multiple Varient"
+                  label="Cake Varient"
                   labelPlacement="start"
                 />
-                {values.isVariant &&
+                {values.iscake &&
                   variants.map((variant, index) => (
                     <Grid item sm={6} xs={12} key={index}>
-                      <TextField
-                        fullWidth
-                        name={`mode-${index}`}
-                        label="Mode"
-                        value={variant.mode}
-                        onChange={(e) =>
-                          handleVariantChange(index, "mode", e.target.value)
-                        }
-                      />
-                      <TextField
-                        fullWidth
-                        name={`description-${index}`}
-                        label="Description"
-                        value={variant.description}
-                        onChange={(e) =>
-                          handleVariantChange(
-                            index,
-                            "description",
-                            e.target.value
-                          )
-                        }
-                        style={{ marginTop: "10px" }}
-                      />
+                      <FormControl fullWidth>
+                        <InputLabel id={`mode-label-${index}`}>Mode</InputLabel>
+                        <Select
+                          labelId={`mode-label-${index}`}
+                          name={`mode-${index}`}
+                          value={variant.mode}
+                          onChange={(e) =>
+                            handleVariantChange(index, "mode", e.target.value)
+                          }
+                        >
+                          <MenuItem value={500}>500 gram</MenuItem>
+                          <MenuItem value={1}>1 Kg</MenuItem>
+                          <MenuItem value={1.5}>1.5 Kg</MenuItem>
+                          <MenuItem value={2}>2 Kg</MenuItem>
+                        </Select>
+                      </FormControl>
+
                       <TextField
                         fullWidth
                         name={`price-${index}`}
@@ -458,12 +442,12 @@ const ProductForm = () => {
                     </Grid>
                   ))}
 
-                {values.isVariant && (
+                {values.iscake && (
                   <Button onClick={handleAddVariant}>Add Variant</Button>
                 )}
               </Grid>
-                
-                <Grid item sm={6} xs={12}>
+
+              <Grid item sm={6} xs={12}>
                 <FormControlLabel
                   name="productIsActive"
                   id="productIsActive"
@@ -477,8 +461,22 @@ const ProductForm = () => {
                   label="Product is Live"
                   labelPlacement="start"
                 />
-                </Grid>
-
+              </Grid>
+              <Grid item sm={6} xs={12}>
+                <FormControlLabel
+                  name="iscombo"
+                  id="iscombo"
+                  control={
+                    <Switch
+                      color="primary"
+                      checked={values.iscombo}
+                      onChange={handleChange}
+                    />
+                  }
+                  label="Product is Combo"
+                  labelPlacement="start"
+                />
+              </Grid>
               <Grid item sm={6} xs={12}>
                 <Button variant="contained" color="info" type="submit">
                   Save product
