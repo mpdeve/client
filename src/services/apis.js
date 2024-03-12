@@ -5,6 +5,8 @@ export const productEndpoints = {
   GETALLRODUCT_API: BASE_URL + "/product/getAllProducts",
   EDITACTIVEPRODUCT_API: BASE_URL + "/product/editActiveproduct",
   GETALLRODUCTSEARCH_API: BASE_URL + "/product/getAllProductsSearch",
+  GETRODUCTBYSLUG_API: BASE_URL + "/product/getProductsBySlug",
+  
 };
 export const categoryEndpoints = {
   ADDCATEGORY_API: BASE_URL + "/product/createCategory",
