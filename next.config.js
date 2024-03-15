@@ -3,7 +3,9 @@ const nextConfig = {
   env: { theme: "DEFAULT", currency: "IND" },
   publicRuntimeConfig: { theme: "DEFAULT", currency: "IND" },
   images: {
-    remotePatterns: [{ protocol: "https", hostname: "ui-lib.com" }]
+    remotePatterns: [{ protocol: "https", hostname: "**" },
+ 
+  ]
   }
 };
 

@@ -13,10 +13,10 @@ import Switch from "@mui/material/Switch";
 import DropZone from "components/DropZone";
 import { FlexBox } from "components/flex-box"; // STYLED COMPONENTS
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { UploadImageBox, StyledClear } from "../styles"; // FORM FIELDS VALIDATION SCHEMA
+import { UploadImageBox, StyledClear,ImagePreview  } from "../styles"; // FORM FIELDS VALIDATION SCHEMA
 import { BASE_URL } from "../../../services/apis";
 import axios from "axios";
-import { AddProduct } from "services/operations/productAdmin";
+import { EditProduct } from "services/operations/productAdmin";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
@@ -39,7 +39,7 @@ const ProductFormEdit = () => {
   const [variants, setVariants] = useState([
     { mode: "", description: "", price: "" },
   ]);
- 
+  const [productId, setProductId] = useState("");
  
   async function fetchData() {
     try {
@@ -83,7 +83,7 @@ const ProductFormEdit = () => {
    
     setFileLink(currentProduct.image);
     setVariants(currentProduct.cakevariants);
-   
+    setProductId(currentProduct._id)
   }, [currentProduct]);
   console.log(fileLink)
   
@@ -93,16 +93,13 @@ const ProductFormEdit = () => {
         ...values,
         cakevariants: variants,
         image: fileLink,
+        productId: productId,
       };
 
       console.log(ProductValues)
-      await AddProduct(ProductValues);
+      await EditProduct(ProductValues);
 
-      // Manually reset each field to its initial value
-      setValues(INITIAL_VALUES);
-      setFiles([]);
-      setVariants([{ mode: "", price: "" }]);
-      setFileLink("");
+    
     } catch (error) {
       console.error("Failed to add product", error);
       // Handle error if necessary
@@ -259,6 +256,9 @@ const ProductFormEdit = () => {
                     return (
                       <UploadImageBox key={index}>
                         <Box component="img" src={file.preview} width="100%" />
+                        {/* {fileLink && (
+                  <ImagePreview src={fileLink} alt="Uploaded Image" />
+                )} */}
                         <StyledClear onClick={handleFileDelete(file)} />
                       </UploadImageBox>
                     );

@@ -8,6 +8,7 @@ import RemoveRedEye from "@mui/icons-material/RemoveRedEye"; // GLOBAL CUSTOM CO
 
 
 import { StyledTableRow, CategoryWrapper, StyledTableCell, StyledIconButton } from "../styles"; // ========================================================================
+import { DeleteCategory } from "services/operations/productAdmin";
 
 // ========================================================================
 const CategoryRow = ({
@@ -22,10 +23,15 @@ const CategoryRow = ({
     slug
   } = category || {};
   const router = useRouter();
-
+const data = {
+  id:id
+}
   const hasSelected = selected.indexOf(name) !== -1;
-
   const handleNavigate = () => router.push(`/admin/categories/${slug}`);
+ const handleDelete = async () =>{
+   await DeleteCategory(data);
+   window.location.reload();
+  }
 
   return <StyledTableRow tabIndex={-1} role="checkbox" selected={hasSelected}>
       <StyledTableCell align="left">#{id.split("-")[0]}</StyledTableCell>
@@ -46,12 +52,7 @@ const CategoryRow = ({
         <StyledIconButton onClick={handleNavigate}>
           <Edit />
         </StyledIconButton>
-
-        <StyledIconButton onClick={handleNavigate}>
-          <RemoveRedEye />
-        </StyledIconButton>
-
-        <StyledIconButton>
+        <StyledIconButton onClick={handleDelete}>
           <Delete />
         </StyledIconButton>
       </StyledTableCell>

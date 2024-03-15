@@ -73,6 +73,7 @@ const ProductsPageView = () => {
         "GET",
         `${GETALLRODUCT_API}?page=${currentPage}`
       );
+      console.log(response)
       setProductList(response?.data?.data);
       setCurrentPage(response?.data?.page);
       setTotalPages(response?.data?.totalPages);
@@ -81,6 +82,7 @@ const ProductsPageView = () => {
     fetchPaginationProducts();
   }, [page]);
 
+  console.log(productList)
   useEffect(() => {
     const fetchallProducts = async () => {
       const response = await apiConnector("GET", GETALLRODUCTSEARCH_API);
@@ -95,7 +97,7 @@ const ProductsPageView = () => {
     description: item.description,
     price: item.price,
     image: item.image,
-    isVariant: item.isVariant,
+    iscake: item.iscake,
     category: item.category.map((cate) => cate.name).join(", "),
     color: item.color.map((col) => col.colorName).join(", "),
     productIsActive: item.productIsActive,
@@ -105,7 +107,10 @@ const ProductsPageView = () => {
     isGst: item.isGst,
     gst: item.gst,
     slug: item.slug,
+    cakevariants:item.cakevariants
   }));
+
+  console.log(filteredProducts)
 
   const handleChangePage = (event, newPage) => {
     const parsedPage = parseInt(newPage, 10);

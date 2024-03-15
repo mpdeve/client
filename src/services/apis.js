@@ -6,9 +6,15 @@ export const productEndpoints = {
   EDITACTIVEPRODUCT_API: BASE_URL + "/product/editActiveproduct",
   GETALLRODUCTSEARCH_API: BASE_URL + "/product/getAllProductsSearch",
   GETRODUCTBYSLUG_API: BASE_URL + "/product/getProductsBySlug",
+  EDITPRODUCT_API: BASE_URL + "/product/editproduct",
   
 };
 export const categoryEndpoints = {
   ADDCATEGORY_API: BASE_URL + "/product/createCategory",
   GETALLCATEGORY_API: BASE_URL + "/product/showAllCategories",
+  GETCATEGORYBYSLUG_API: BASE_URL + "/product/getCategoryBySlug",
+  EDITCATEGORY_API: BASE_URL + "/product/editcategory",
+  GETALLCATEGORYPAGINATION_API: BASE_URL + "/product/getAllCategoriesPagination",
+  DELETECATEGORY_API: BASE_URL + "/product/deletecategory",
+  
 };

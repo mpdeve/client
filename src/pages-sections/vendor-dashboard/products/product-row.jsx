@@ -31,15 +31,15 @@ const ProductRow = ({
     name,
     price,
     image,
-    isVariant,
+    iscake,
     id,
-    published,
     color,
     productIsActive,
     slug,
     isSale,
     salePrice,
     salePercentage,
+    cakevariants,
     isGst,
     gst
   } = product || {};
@@ -47,17 +47,17 @@ const ProductRow = ({
   const style = {
     position: 'absolute',
     top: '50%',
-    left: '50%',
+    left: '57%',
     transform: 'translate(-50%, -50%)',
-    width: 900,
+    width: 1500,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
   };
-  
-const varient = isVariant == true ? ("True"):("False");
-const updatedPrice = isVariant == true ? ("-"):(price);
+  console.log(cakevariants)
+const varient = iscake == true ? ("True"):("False");
+const updatedPrice = iscake == true ? ("-"):(price);
   const router = useRouter();
   const [productPublish, setProductPublish] = useState(productIsActive);
   const handleChange = async () => {
@@ -126,7 +126,7 @@ const updatedPrice = isVariant == true ? ("-"):(price);
       {varient}
       </StyledTableCell>
 
-      <StyledTableCell align="left">{isVariant == true ? ("-"):(`₹ ${price}`)}</StyledTableCell>
+      <StyledTableCell align="left">{iscake == true ? ("-"):(`₹ ${price}`)}</StyledTableCell>
 
       <StyledTableCell align="left">
         <BazaarSwitch color="info" checked={productIsActive} onChange={handleChange} />
@@ -157,6 +157,7 @@ const updatedPrice = isVariant == true ? ("-"):(price);
         <TableCell>Sale Price:</TableCell>
         <TableCell>GST:</TableCell>
         <TableCell>Slug</TableCell>
+        <TableCell>variant</TableCell>
       </TableRow>
     </TableHead>
     <TableBody>
@@ -165,11 +166,16 @@ const updatedPrice = isVariant == true ? ("-"):(price);
           <TableCell>{name}</TableCell>
           <TableCell>{category}</TableCell>
           <TableCell>{color}</TableCell>
-          <TableCell>{isVariant == true ? ("-"):(`₹ ${price}`)}</TableCell>
-          <TableCell>{isSale == true && isVariant == false  ? (`₹ ${salePrice}`) : ("-")}</TableCell>
+          <TableCell>{iscake == true ? ("-"):(`₹ ${price}`)}</TableCell>
+          <TableCell>{isSale == true && iscake == false  ? (`₹ ${salePrice}`) : ("-")}</TableCell>
           <TableCell>{isGst == true ? (gst):("-")}</TableCell>
           <TableCell>{slug}</TableCell>
-        
+          {cakevariants.map((variant) => (
+                      <TableRow key={variant._id}>
+                        <TableCell>{variant.mode == 500 ? (`${variant.mode} grams`):(`${variant.mode} Kg`)}</TableCell>
+                        <TableCell>{`₹ ${variant.price}`}</TableCell>
+                      </TableRow>
+                    ))}
         </TableRow>
      
     </TableBody>
