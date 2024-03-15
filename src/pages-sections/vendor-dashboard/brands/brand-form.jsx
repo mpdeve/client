@@ -1,47 +1,32 @@
-import { useState } from "react";
-import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import { Formik } from "formik";
 import * as yup from "yup"; // GLOBAL CUSTOM COMPONENTS
-
-import DropZone from "components/DropZone";
-import { FlexBox } from "components/flex-box"; // STYLED COMPONENTS
-
-import { UploadImageBox, StyledClear } from "../styles"; // FORM FIELDS VALIDATION SCHEMA
-
+import { AddColor } from "services/operations/productAdmin";
 const VALIDATION_SCHEMA = yup.object().shape({
-  name: yup.string().required("Name is required!")
+  hexColor: yup.string().required("Name is required!")
 }); // ================================================================
 
 // ================================================================
-const BrandForm = props => {
-  const {
-    initialValues,
-    handleFormSubmit
-  } = props;
-  const [files, setFiles] = useState([]); // HANDLE UPDATE NEW IMAGE VIA DROP ZONE
+const BrandForm = () => {
+  const INITIAL_VALUES = {
+    hexColor: "",
+    colorName:""
+  };
 
-  const handleChangeDropZone = files => {
-    files.forEach(file => Object.assign(file, {
-      preview: URL.createObjectURL(file)
-    }));
-    setFiles(files);
-  }; // HANDLE DELETE UPLOAD IMAGE
-
-
-  const handleFileDelete = file => () => {
-    setFiles(files => files.filter(item => item.name !== file.name));
+  const handleFormSubmit = async (values) => {
+    console.log(values);
+    await AddColor(values);
+    values.hexColor = "";
+    values.colorName = "";
   };
 
   return <Card sx={{
     p: 6
   }}>
-      <Formik onSubmit={handleFormSubmit} initialValues={initialValues} validationSchema={VALIDATION_SCHEMA}>
+      <Formik onSubmit={handleFormSubmit} initialValues={INITIAL_VALUES} validationSchema={VALIDATION_SCHEMA}>
         {({
         values,
         errors,
@@ -50,31 +35,42 @@ const BrandForm = props => {
         handleBlur,
         handleSubmit
       }) => <form onSubmit={handleSubmit}>
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <TextField fullWidth name="name" label="Name" color="info" size="medium" placeholder="Name" value={values.name} onBlur={handleBlur} onChange={handleChange} error={!!touched.name && !!errors.name} helperText={touched.name && errors.name} />
-              </Grid>
-
-              <Grid item xs={12}>
-                <DropZone title="Drop & drag category image" onChange={files => handleChangeDropZone(files)} />
-
-                <FlexBox flexDirection="row" mt={2} flexWrap="wrap" gap={1}>
-                  {files.map((file, index) => {
-                return <UploadImageBox key={index}>
-                        <Box component="img" alt="product" src={file.preview} width="100%" />
-                        <StyledClear onClick={handleFileDelete(file)} />
-                      </UploadImageBox>;
-              })}
-                </FlexBox>
+      <Grid container spacing={3}>
+              <Grid item sm={6} xs={12}>
+                <TextField
+                  fullWidth
+                  name="hexColor"
+                  label="hexColor"
+                  color="info"
+                  size="medium"
+                  placeholder="hexColor"
+                  value={values.hexColor}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  error={!!touched.hexColor && !!errors.hexColor}
+                  helperText={touched.hexColor && errors.hexColor}
+                />
               </Grid>
 
               <Grid item sm={6} xs={12}>
-                <FormControlLabel label="Featured Category" control={<Checkbox color="info" name="featured" onBlur={handleBlur} onChange={handleChange} value={values.featured} />} />
+                <TextField
+                  fullWidth
+                  name="colorName"
+                  label="colorName"
+                  color="info"
+                  size="medium"
+                  placeholder="colorName"
+                  value={values.colorName}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  error={!!touched.colorName && !!errors.colorName}
+                  helperText={touched.colorName && errors.colorName}
+                />
               </Grid>
 
               <Grid item xs={12}>
                 <Button variant="contained" color="info" type="submit">
-                  Save category
+                  Save Color
                 </Button>
               </Grid>
             </Grid>

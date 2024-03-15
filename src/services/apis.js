@@ -18,3 +18,7 @@ export const categoryEndpoints = {
   DELETECATEGORY_API: BASE_URL + "/product/deletecategory",
   
 };
+
+export const colorEndpoints = {
+  ADDCOLOR_API: BASE_URL + "/product/createColor",
+}

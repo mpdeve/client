@@ -30,14 +30,14 @@ export const navigation = [{
     path: "/admin/categories/create"
   }]
 }, {
-  name: "Brands",
+  name: "Colors",
   icon: duotone.Apps,
   children: [{
-    name: "Brand List",
-    path: "/admin/brands"
+    name: "Colors List",
+    path: "/admin/colors"
   }, {
-    name: "Create Brand",
-    path: "/admin/brands/create"
+    name: "Create Color",
+    path: "/admin/colors/create"
   }]
 }, {
   name: "Orders",

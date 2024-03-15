@@ -44,7 +44,7 @@ const BrandsPageView = ({
     defaultSort: "name"
   });
   return <Box py={4}>
-      <H3 mb={2}>Product Brands</H3>
+      <H3 mb={2}>Product Colors</H3>
 
       <SearchArea handleSearch={() => {}} buttonText="Add Brand" url="/admin/brands/create" searchPlaceholder="Search Brand..." />
 
