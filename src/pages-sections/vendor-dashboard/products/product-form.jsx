@@ -20,11 +20,11 @@ import { AddProduct } from "services/operations/productAdmin";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
-
+import { toast } from "react-hot-toast";
 const VALIDATION_SCHEMA = yup.object().shape({
   name: yup.string().required("Name is required!"),
   categories: yup.array().min(1).required("Category is required!"),
-  description: yup.string().required("Description is required!")
+  description: yup.string().required("Description is required!"),
 }); // ================================================================
 
 const ProductForm = () => {
@@ -53,7 +53,7 @@ const ProductForm = () => {
         image: fileLink,
       };
 
-      console.log(ProductValues)
+      console.log(ProductValues);
       await AddProduct(ProductValues);
 
       // Manually reset each field to its initial value
@@ -74,6 +74,8 @@ const ProductForm = () => {
   const [variants, setVariants] = useState([
     { mode: "", description: "", price: "" },
   ]);
+
+  console.log(files);
 
   useEffect(() => {
     getAllCategoriesDetails();
@@ -98,25 +100,40 @@ const ProductForm = () => {
       console.error("Failed to Fetch Colors", error);
     }
   }
-  async function postImg(key, type) {
+  async function postImg(key, type,file) {
     try {
+      // 1. Send a POST request to your server to get a signed URL for uploading
       const response = await axios.post(`${BASE_URL}/product/uploadImg`, {
         key: key,
         content_type: type,
       });
-
+  
       const data = response.data;
-
+  
+      // 2. Set the file link state with the URL returned from the server
       setFileLink(data?.data?.fileLink);
-      const newResponse = await axios.put(data?.data?.signedUrl, files[0], {
+  
+      // 3. Use FormData to prepare file data for upload
+      
+  
+      
+      // 4. Use axios to send a PUT request with the file data to the signed URL
+      const newResponse = await axios.put(data?.data?.signedUrl, file, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
+  
+       // Log the response for debugging
+  
+      // 5. Optionally, dismiss a loading toast if shown
+      toast.dismiss(toastId);
     } catch (error) {
       console.error("Failed to upload image", error);
     }
   }
+  
+  
 
   const handleVariantChange = (index, key, value) => {
     const updatedVariants = [...variants];
@@ -140,15 +157,23 @@ const ProductForm = () => {
     updatedVariants.splice(index, 1);
     setVariants(updatedVariants);
   };
-  const handleChangeDropZone = (files) => {
-    files.forEach((file) =>
-      Object.assign(file, {
-        preview: URL.createObjectURL(file),
-      })
-    );
-    setFiles(files);
-    postImg(files[0].name, files[0].type);
-  }; // HANDLE DELETE UPLOAD IMAGE
+  const handleChangeDropZone = async (files) => {
+    try {
+      files.forEach((file) =>
+        Object.assign(file, {
+          preview: URL.createObjectURL(file),
+        })
+      );
+      setFiles(files);
+  console.log(files)
+      let parts = files[0].name.split(".");
+      let key = parts[0];
+      await postImg(key, files[0].type,files[0]); // Call postImg after setting files state
+    } catch (error) {
+      console.error("Failed to handle drop zone change", error);
+    }
+  };
+  
 
   const handleFileDelete = (file) => () => {
     setFiles((files) => files.filter((item) => item.name !== file.name));
@@ -264,7 +289,6 @@ const ProductForm = () => {
                   label="Price"
                   onChange={handleChange}
                   placeholder="Price"
-                 
                 />
               </Grid>
 
@@ -280,7 +304,6 @@ const ProductForm = () => {
                   onChange={handleChange}
                   placeholder="Vendor Price"
                   value={values.vendorPrice}
-               
                 />
               </Grid>
 
