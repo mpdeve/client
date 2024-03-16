@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 
 const { ADDPRODUCT_API, EDITACTIVEPRODUCT_API,EDITPRODUCT_API } = productEndpoints;
 const { ADDCATEGORY_API,GETALLCATEGORY_API,EDITCATEGORY_API,DELETECATEGORY_API } = categoryEndpoints;
-const {ADDCOLOR_API} = colorEndpoints;
+const {ADDCOLOR_API,EDITCOLOR_API} = colorEndpoints;
 
 export const AddProduct = async (data) => {
   const toastId = toast.loading("Adding Product...");
@@ -87,6 +87,17 @@ export const AddColor = async (data) => {
     toast.success("Color added successfully");
   } catch (error) {
     console.log("Color Add Error...........", error);
+  }
+  toast.dismiss(toastId);
+};
+
+export const EditColor = async (data) => {
+  const toastId = toast.loading("Editing Color...");
+  try {
+    const response = await apiConnector("PUT", EDITCOLOR_API, data);
+    toast.success("Color Edited successfully");
+  } catch (error) {
+    console.log("Color Edit Error...........", error);
   }
   toast.dismiss(toastId);
 };

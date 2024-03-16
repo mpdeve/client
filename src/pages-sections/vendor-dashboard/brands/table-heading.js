@@ -4,16 +4,12 @@ export const tableHeading = [{
   label: "ID",
   align: "center"
 }, {
-  id: "name",
-  label: "Name",
+  id: "hexColor",
+  label: "hexColor",
   align: "center"
 }, {
-  id: "logo",
-  label: "Logo",
-  align: "center"
-}, {
-  id: "featured",
-  label: "Featured",
+  id: "colorName",
+  label: "colorName",
   align: "center"
 }, {
   id: "action",

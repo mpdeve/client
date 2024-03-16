@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Avatar from "@mui/material/Avatar"; // MUI ICON COMPONENTS
-
+import Edit from "@mui/icons-material/Edit";
 import Delete from "@mui/icons-material/Delete";
 import RemoveRedEye from "@mui/icons-material/RemoveRedEye"; // GLOBAL CUSTOM COMPONENT
 
@@ -11,43 +11,29 @@ import { StyledIconButton, StyledTableCell, StyledTableRow } from "../styles"; /
 
 // ========================================================================
 const BrandRow = ({
-  brand,
+  color,
   selected
 }) => {
   const {
-    name,
-    featured,
-    logo,
+    colorName,
+    hexColor,
     id,
     slug
-  } = brand || {};
+  } = color || {};
   const router = useRouter();
-  const [featuredCategory, setFeaturedCategory] = useState(featured);
-  const hasSelected = selected.indexOf(name) !== -1;
+  const hasSelected = selected.indexOf(colorName) !== -1;
 
-  const handleNavigate = () => router.push(`/admin/categories/${slug}`);
+  const handleNavigate = () => router.push(`/admin/colors/${slug}`);
 
   return <StyledTableRow tabIndex={-1} role="checkbox" selected={hasSelected}>
       <StyledTableCell align="center">#{id.split("-")[0]}</StyledTableCell>
 
-      <StyledTableCell align="center">{name}</StyledTableCell>
+      <StyledTableCell align="center">{hexColor}</StyledTableCell>
 
-      <StyledTableCell align="center">
-        <Avatar alt={name} src={logo} sx={{
-        width: 55,
-        height: "auto",
-        margin: "auto",
-        borderRadius: 0
-      }} />
-      </StyledTableCell>
-
-      <StyledTableCell align="center">
-        <BazaarSwitch color="info" checked={featuredCategory} onChange={() => setFeaturedCategory(state => !state)} />
-      </StyledTableCell>
-
+      <StyledTableCell align="center">{colorName}</StyledTableCell>
       <StyledTableCell align="center">
         <StyledIconButton onClick={handleNavigate}>
-          <RemoveRedEye />
+        <Edit />
         </StyledIconButton>
 
         <StyledIconButton>

@@ -21,4 +21,8 @@ export const categoryEndpoints = {
 
 export const colorEndpoints = {
   ADDCOLOR_API: BASE_URL + "/product/createColor",
+  GETALLCOLOR_API: BASE_URL + "/product/showAllColors",
+  GETCOLORBYSLUG_API: BASE_URL + "/product/getColorBySlug",
+  EDITCOLOR_API: BASE_URL + "/product/editColor",
+  
 }
