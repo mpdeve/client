@@ -3,9 +3,9 @@ import { productEndpoints, categoryEndpoints,colorEndpoints } from "../apis";
 
 import { toast } from "react-hot-toast";
 
-const { ADDPRODUCT_API, EDITACTIVEPRODUCT_API,EDITPRODUCT_API } = productEndpoints;
+const { ADDPRODUCT_API, EDITACTIVEPRODUCT_API,EDITPRODUCT_API,DELETEPRODUCT_API } = productEndpoints;
 const { ADDCATEGORY_API,GETALLCATEGORY_API,EDITCATEGORY_API,DELETECATEGORY_API } = categoryEndpoints;
-const {ADDCOLOR_API,EDITCOLOR_API} = colorEndpoints;
+const {ADDCOLOR_API,EDITCOLOR_API,DELETECOLOR_API} = colorEndpoints;
 
 export const AddProduct = async (data) => {
   const toastId = toast.loading("Adding Product...");
@@ -36,6 +36,18 @@ export const EditProductStatus = async (data) => {
     toast.success("Product Saved successfully");
   } catch (error) {
     console.log("Product Add Error...........", error);
+  }
+  toast.dismiss(toastId);
+};
+
+export const DeleteProduct = async (data) => {
+  const toastId = toast.loading("Deleting Product...");
+  console.log(data)
+  try {
+    const response = await apiConnector("DELETE", DELETEPRODUCT_API, data);
+    toast.success("Product Deleted successfully");
+  } catch (error) {
+    console.log("Product Deleted Error...........", error);
   }
   toast.dismiss(toastId);
 };
@@ -98,6 +110,18 @@ export const EditColor = async (data) => {
     toast.success("Color Edited successfully");
   } catch (error) {
     console.log("Color Edit Error...........", error);
+  }
+  toast.dismiss(toastId);
+};
+
+export const DeleteColor = async (data) => {
+  const toastId = toast.loading("Deleting Color...");
+  console.log(data)
+  try {
+    const response = await apiConnector("DELETE", DELETECOLOR_API, data);
+    toast.success("Color Deleted successfully");
+  } catch (error) {
+    console.log("Color Deleted Error...........", error);
   }
   toast.dismiss(toastId);
 };

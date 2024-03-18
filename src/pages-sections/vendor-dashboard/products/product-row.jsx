@@ -44,6 +44,10 @@ const ProductRow = ({
     gst
   } = product || {};
 
+  const DeleteProductData = {
+    productId:id
+  }
+
   const style = {
     position: 'absolute',
     top: '50%',

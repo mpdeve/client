@@ -50,9 +50,16 @@ export const navigation = [{
     path: "/admin/orders/f0ba538b-c8f3-45ce-b6c1-209cf07ba5f8"
   }]
 }, {
-  name: "Customers",
+  name: "Vendors",
   icon: duotone.Customers,
-  path: "/admin/customers"
+  children: [{
+    name: "Vendor List",
+    path: "/admin/vendors"
+  }, {
+    name: "Create Vendor",
+    path: "/admin/vendors/create"
+  }]
+ 
 }, {
   name: "Refunds",
   icon: duotone.Refund,

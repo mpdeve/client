@@ -2,7 +2,7 @@ import Avatar from "@mui/material/Avatar"; // MUI ICON COMPONENTS
 
 import Edit from "@mui/icons-material/Edit";
 import Delete from "@mui/icons-material/Delete"; // GLOBAL CUSTOM COMPONENTS
-
+import { useRouter } from "next/navigation";
 import { FlexBox } from "components/flex-box";
 import { Paragraph } from "components/Typography"; // CUSTOM UTILS LIBRARY FUNCTION
 
@@ -15,20 +15,23 @@ const CustomerRow = ({
   customer
 }) => {
   const {
-    email,
+    id,
     name,
-    phone,
-    avatar,
-    balance,
-    orders
+    email,
+    active,
+    image,
+    phone
   } = customer || {};
+
   const STYLE = {
     fontWeight: 400
   };
+  const router = useRouter();
+  const handleNavigate = () => router.push(`/admin/vendors/${id}`);
   return <StyledTableRow tabIndex={-1} role="checkbox">
       <StyledTableCell align="left">
         <FlexBox alignItems="center" gap={1.5}>
-          <Avatar alt={name} src={avatar} />
+          <Avatar alt={name} src={image} />
           <Paragraph fontWeight={600}>{name}</Paragraph>
         </FlexBox>
       </StyledTableCell>
@@ -42,21 +45,16 @@ const CustomerRow = ({
       </StyledTableCell>
 
       <StyledTableCell align="left" sx={STYLE}>
-        {currency(balance)}
+      {active ? ("Active") : ("Inactive")}
       </StyledTableCell>
 
-      <StyledTableCell align="left" sx={STYLE}>
-        {orders}
-      </StyledTableCell>
-
+  
       <StyledTableCell align="center">
-        <StyledIconButton>
+        <StyledIconButton onClick={handleNavigate}>
           <Edit />
         </StyledIconButton>
 
-        <StyledIconButton>
-          <Delete />
-        </StyledIconButton>
+       
       </StyledTableCell>
     </StyledTableRow>;
 };
